@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Kiss Bank 💋</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:ital,wght@0,400;0,600;1,400&display=swap');
+
+        :root { 
+            --deep-cherry: #9d0208;
+            --love-red: #ff2a6d; 
+            --soft-pink: #ff85a1; 
+        }
+
+        body {
+            margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #2b0d0d 0%, #5e0b1b 100%);
+            font-family: 'Poppins', sans-serif; overflow: hidden; touch-action: manipulation;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px); padding: 40px; border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center; width: 340px; border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; z-index: 10;
+        }
+
+        .header-text { 
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem; color: var(--soft-pink); margin-bottom: 10px;
+        }
+
+        #score { 
+            font-size: 6rem; color: white; font-weight: 900; margin: 5px 0; 
+            text-shadow: 0 0 20px var(--love-red);
+            transition: transform 0.1s ease;
+        }
+
+        .sub-label { font-size: 1rem; color: var(--soft-pink); margin-bottom: 25px; letter-spacing: 1px; }
+
+        #phrase { 
+            height: 80px; color: #fff; font-size: 1.2rem; font-style: italic; 
+            margin-bottom: 25px; display: flex; align-items: center; justify-content: center;
+            line-height: 1.4; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .kiss-btn {
+            background: linear-gradient(to right, #ff2a6d, #9d0208);
+            color: white; border: none; padding: 22px 0;
+            font-size: 1.5rem; border-radius: 100px; cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 42, 109, 0.4); 
+            transition: all 0.2s; width: 100%; font-weight: bold;
+        }
+
+        .kiss-btn:active { transform: translateY(4px) scale(0.98); box-shadow: 0 4px 10px rgba(255, 42, 109, 0.2); }
+        
+        .floating-kiss { 
+            position: fixed; pointer-events: none; z-index: 100; 
+            animation: fly 2.5s cubic-bezier(0.1, 0.6, 0.3, 1) forwards; 
+            font-size: 2.5rem; filter: drop-shadow(0 0 10px var(--love-red));
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-110vh) scale(2) rotate(45deg); opacity: 0; }
+        }
+
+        .glow {
+            position: absolute; width: 150px; height: 150px;
+            background: var(--love-red); filter: blur(100px);
+            border-radius: 50%; z-index: -1; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); opacity: 0.3;
+        }
+
+        .reset-link {
+            margin-top: 20px; color: rgba(255, 255, 255, 0.2);
+            font-size: 0.7rem; text-decoration: none; cursor: pointer;
+            transition: color 0.3s;
+        }
+        .reset-link:hover { color: var(--soft-pink); }
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+    <div class="app-card">
+        <div class="header-text">Kisses you owe me...</div>
+        <div id="score">0</div>
+        <div class="sub-label">Waiting to be claimed 💋</div>
+        <div id="phrase">Are you going to make me wait?</div>
+        
+        <button class="kiss-btn" onclick="sendKiss()">Give me +8 Kisses</button>
+    </div>
+
+    <a class="reset-link" onclick="resetBank()">Reset Kiss Bank</a>
+
+    <script>
+        // Load count from local storage on startup
+        let count = parseInt(localStorage.getItem('savedKisses')) || 0;
+        document.getElementById('score').innerText = count;
+
+        const flirtyLines = [
+            "I just earned 8 more, I'm gonna be busy...",
+            "I'm gonna be full with these kisses meals 😘",
+            "Keep clicking, I'm ready to get all these from you",
+            "ah ahh, that's a lot of sugar I'm asking for...",
+            "I'm feeling like a threat now to get your kisses ",
+            "Your kiss account is growing fast. I'm craving more 😏",
+            "I hope you're ready to give all of these at once",
+            "I am quite greedy for your kisses ❤️"
+        ];
+
+        function sendKiss() {
+            count += 8;
+            localStorage.setItem('savedKisses', count); // Store the count
+            
+            const scoreEl = document.getElementById('score');
+            scoreEl.innerText = count;
+            
+            scoreEl.style.transform = "scale(1.2)";
+            setTimeout(() => scoreEl.style.transform = "scale(1)", 100);
+
+            document.getElementById('phrase').innerText = flirtyLines[Math.floor(Math.random() * flirtyLines.length)];
+            
+            createKiss();
+        }
+
+        function createKiss() {
+            const k = document.createElement('div');
+            k.className = 'floating-kiss';
+            k.innerHTML = '💋';
+            k.style.left = (Math.random() * 80 + 10) + 'vw';
+            k.style.top = '80vh';
+            k.style.animationDuration = (2 + Math.random()) + 's';
+            document.body.appendChild(k);
+            setTimeout(() => k.remove(), 2500);
+        }
+
+        function resetBank() {
+            if(confirm("Are you sure you want to clear our kiss bank?")) {
+                count = 0;
+                localStorage.setItem('savedKisses', 0);
+                document.getElementById('score').innerText = 0;
+                document.getElementById('phrase').innerText = "Bank cleared. Start over? 😉";
+            }
+        }
+    </script>
+</body>
+</html>
