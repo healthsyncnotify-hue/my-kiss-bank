@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Private Kiss Bank 💋</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:ital,wght@0,400;0,600;1,400&display=swap');
+
+        :root { 
+            --deep-cherry: #2b0d0d;
+            --love-red: #ff2a6d; 
+            --soft-pink: #ff85a1; 
+            --gold: #ffd700;
+        }
+
+        body {
+            margin: 0; 
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            background: linear-gradient(135deg, #2b0d0d 0%, #5e0b1b 100%);
+            font-family: 'Poppins', sans-serif; 
+            overflow: hidden; 
+            touch-action: none;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px); 
+            padding: 30px 20px; 
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center; 
+            width: 85%; 
+            max-width: 340px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; 
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        .header-text { 
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem; 
+            color: var(--soft-pink); 
+            margin-bottom: 5px;
+        }
+
+        #score { 
+            font-size: 5.5rem; 
+            color: white; 
+            font-weight: 900; 
+            margin: 5px 0; 
+            text-shadow: 0 0 20px var(--love-red);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sub-label { 
+            font-size: 0.9rem; 
+            color: var(--soft-pink); 
+            margin-bottom: 20px; 
+            letter-spacing: 1px;
+        }
+
+        #phrase { 
+            height: 100px; 
+            color: #fff; 
+            font-size: 1.1rem; 
+            font-style: italic; 
+            margin-bottom: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+        
+        .kiss-btn {
+            background: linear-gradient(to right, #ff2a6d, #9d0208);
+            color: white; 
+            border: none; 
+            padding: 20px 0;
+            font-size: 1.4rem; 
+            border-radius: 100px; 
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 42, 109, 0.4); 
+            transition: all 0.2s; 
+            width: 100%; 
+            font-weight: bold;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .kiss-btn:active { transform: scale(0.92); opacity: 0.9; }
+        
+        .floating-kiss { 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 100; 
+            animation: fly 2.5s cubic-bezier(0.1, 0.6, 0.3, 1) forwards; 
+            font-size: 2.5rem; 
+            filter: drop-shadow(0 0 10px var(--love-red));
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-110vh) scale(2) rotate(45deg); opacity: 0; }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--soft-pink);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            box-shadow: 0 0 10px var(--gold);
+            animation: sparkle-fade 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkle-fade {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .milestone-container {
+            position: fixed;
+            top: 15%;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .milestone-msg {
+            color: var(--gold);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            text-align: center;
+            padding: 0 20px;
+            animation: zoomIn 0.8s ease-out forwards, fadeOut 1.5s ease-in 2.5s forwards;
+            display: none;
+        }
+
+        .reset-link {
+            position: fixed;
+            bottom: 20px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.7rem;
+            text-decoration: none;
+            cursor: pointer;
+            z-index: 50;
+            pointer-events: auto;
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="milestone-container">
+        <div id="milestone" class="milestone-msg"></div>
+    </div>
+
+    <div class="app-card">
+        <div class="header-text">Kisses you owe me...</div>
+        <div id="score">...</div>
+        <div class="sub-label"> Your Dues 💋</div>
+        <div id="phrase">Ready to start our collection?</div>
+        
+        <button class="kiss-btn" id="kissButton">Give me +8 Kisses</button>
+    </div>
+
+    <div class="reset-link" id="resetBtn">Reset Bank</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANql9VS2YCNv-79O7cWkFdfzJxn7LBqY4",
+            authDomain: "kissbank-de26e.firebaseapp.com",
+            databaseURL: "https://kissbank-de26e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "kissbank-de26e",
+            storageBucket: "kissbank-de26e.firebasestorage.app",
+            messagingSenderId: "672311624309",
+            appId: "1:672311624309:web:361178d0de93ea2eb7ae3c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const kissRef = ref(db, 'kiss_bank/total');
+
+        let currentCount = 0;
+        const scoreEl = document.getElementById('score');
+        const phraseEl = document.getElementById('phrase');
+        const kissButton = document.getElementById('kissButton');
+        const milestoneEl = document.getElementById('milestone');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const flirtyLines = [
+            "I just earned 8 more, I'm gonna be busy 🎀",
+            "I'm gonna be full with these kisses meals 😘",
+            "Keep clicking, I'm ready to get all these from you 🏹",
+            "ah ahh, that's a lot of sugar I'm asking for 🍭",
+            "I'm feeling like a threat now to get your kisses 🔥",
+            "Your kiss account is growing fast. I'm craving more 😏",
+            "I hope you're ready to give all of these at once ✨",
+            "I am quite greedy for your kisses ❤️"
+        ];
+
+        // Sparkle Logic
+        document.addEventListener('mousemove', (e) => createSparkle(e.clientX, e.clientY));
+        document.addEventListener('touchstart', (e) => createSparkle(e.touches[0].clientX, e.touches[0].clientY));
+        document.addEventListener('touchmove', (e) => createSparkle(e.touches[0].clientX, e.touches[0].clientY));
+
+        function createSparkle(x, y) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = x + 'px';
+            s.style.top = y + 'px';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 800);
+        }
+
+        // Sync with Database
+        onValue(kissRef, (snapshot) => {
+            const newScore = snapshot.val() || 0;
+            checkMilestones(newScore, currentCount);
+            currentCount = newScore;
+            scoreEl.innerText = currentCount;
+            scoreEl.style.transform = "scale(1.2)";
+            setTimeout(() => scoreEl.style.transform = "scale(1)", 150);
+        });
+
+        function checkMilestones(newScore, oldScore) {
+            if (newScore >= 50 && oldScore < 50) triggerMilestone("50 Kisses ✨ You're warming up");
+            if (newScore >= 100 && oldScore < 100) triggerMilestone("100 Kisses ✨ My heart is yours");
+            if (newScore >= 200 && oldScore < 200) triggerMilestone("200 Kisses ✨ This is getting serious");
+            if (newScore >= 500 && oldScore < 500) triggerMilestone("500 Kisses ✨ Absolute Love Overload");
+        }
+
+        function triggerMilestone(text) {
+            milestoneEl.innerText = text;
+            milestoneEl.style.display = 'block';
+            for(let i=0; i<25; i++) {
+                setTimeout(createKiss, i * 80);
+            }
+            setTimeout(() => { milestoneEl.style.display = 'none'; }, 4000);
+        }
+
+        kissButton.addEventListener('click', () => {
+            if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(25); }
+            set(kissRef, currentCount + 8); 
+            phraseEl.innerText = flirtyLines[Math.floor(Math.random() * flirtyLines.length)];
+            createKiss();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if(confirm("Are you sure you want to reset our bank? This clears it for both of us")) {
+                set(kissRef, 0);
+            }
+        });
+
+        function createKiss() {
+            const k = document.createElement('div');
+            k.className = 'floating-kiss';
+            k.innerHTML = '💋';
+            k.style.left = (Math.random() * 80 + 10) + 'vw';
+            k.style.top = '80vh';
+            k.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.body.appendChild(k);
+            setTimeout(() => k.remove(), 2500);
+        }
+    </script>
+</body>
+</html>
