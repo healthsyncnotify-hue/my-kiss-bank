@@ -189,8 +189,10 @@
     <div class="reset-link" id="resetBtn">Reset Bank</div>
 
     <script type="module">
+        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyANql9VS2YCNv-79O7cWkFdfzJxn7LBqY4",
@@ -199,12 +201,19 @@
             projectId: "kissbank-de26e",
             storageBucket: "kissbank-de26e.firebasestorage.app",
             messagingSenderId: "672311624309",
-            appId: "1:672311624309:web:361178d0de93ea2eb7ae3c"
+            appId: "1:672311624309:web:361178d0de93ea2eb7ae3c",
+            measurementId: "G-F8EVL83C4D" // Replace with your actual G-ID from Firebase Console if needed
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const analytics = getAnalytics(app);
         const kissRef = ref(db, 'kiss_bank/total');
+
+        // Track when the link is opened
+        logEvent(analytics, 'page_view');
+        logEvent(analytics, 'app_opened');
 
         let currentCount = 0;
         const scoreEl = document.getElementById('score');
@@ -266,6 +275,12 @@
 
         kissButton.addEventListener('click', () => {
             if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(25); }
+            
+            // Track the click
+            logEvent(analytics, 'kiss_button_clicked', {
+                current_total: currentCount + 8
+            });
+
             set(kissRef, currentCount + 8); 
             phraseEl.innerText = flirtyLines[Math.floor(Math.random() * flirtyLines.length)];
             createKiss();
@@ -274,6 +289,7 @@
         resetBtn.addEventListener('click', () => {
             if(confirm("Are you sure you want to reset our bank? This clears it for both of us")) {
                 set(kissRef, 0);
+                logEvent(analytics, 'bank_reset');
             }
         });
 
@@ -289,4 +305,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
